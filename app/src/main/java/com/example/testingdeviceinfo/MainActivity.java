@@ -7,7 +7,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import io.applova.health.beans.ClientInfo;
-import io.applova.health.job.DeviceInfoJob;
+import io.applova.health.job.DeviceInfoInitializerService;
 import io.realm.Realm;
 
 public class MainActivity extends AppCompatActivity {
@@ -25,8 +25,8 @@ public class MainActivity extends AppCompatActivity {
         clientInfo.setContext(this);
 
         // Create and initialize DeviceInfoJob
-        DeviceInfoJob deviceInfoJob = new DeviceInfoJob();
-        deviceInfoJob.initialize(clientInfo);  // Schedule job on app start
+        DeviceInfoInitializerService deviceInfoInitializerService = new DeviceInfoInitializerService();
+        deviceInfoInitializerService.initialize(clientInfo);  // Schedule job on app start
 
         // Get the button from the layout
         Button btnTriggerJob = findViewById(R.id.btnTriggerJob);
@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Sets up a button to trigger the DeviceInfoJob when clicked.
+     * Sets up a button to trigger the DeviceInfoService when clicked.
      *
      * @param button The button to set the click listener on.
      */
@@ -47,8 +47,8 @@ public class MainActivity extends AppCompatActivity {
                 ClientInfo clientInfo = new ClientInfo();
                 clientInfo.setContext(MainActivity.this);
 
-                DeviceInfoJob deviceInfoJob = new DeviceInfoJob();
-                deviceInfoJob.initialize(clientInfo);
+                DeviceInfoInitializerService deviceInfoInitializerService = new DeviceInfoInitializerService();
+                deviceInfoInitializerService.initialize(clientInfo);
 
                 Toast.makeText(MainActivity.this, "Job triggered!", Toast.LENGTH_SHORT).show();
             }
