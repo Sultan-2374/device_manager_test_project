@@ -1,0 +1,57 @@
+plugins {
+    id 'com.android.library'
+    id 'maven-publish'
+}
+
+apply plugin: 'realm-android'
+
+realm { syncEnabled = true }
+
+repositories {
+    mavenLocal() // To publish locally
+}
+
+dependencies {
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.2'
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.15.2'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.15.2'
+}
+
+android {
+    namespace 'io.applova.health.mylibrary'
+    compileSdk 31
+
+    defaultConfig {
+        minSdk 21
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            mavenAar(MavenPublication) {
+
+                groupId = 'io.applova.health'
+                artifactId = 'health'
+                version = '0.0.1'
+                artifact("$buildDir/outputs/aar/mylibrary-release.aar") {
+                    builtBy tasks.named("assembleRelease")
+                }
+            }
+        }
+    }
+}
